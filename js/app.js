@@ -25,13 +25,40 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
-    this.x = 200;
-    this.y = 400;
+    this.x = 202;
+    this.y = 404;
     this.sprite = 'images/char-boy.png';
 }
 
-Player.prototype.handleInput = function() {
-
+Player.prototype.handleInput = function(direction) {
+    switch(direction) {
+        case 'left':
+            if(this.x - 101 < 0) {
+                return;
+            }
+            this.x -= 101;
+            break;
+        case 'up':
+            if(this.y - 101 < 0) {
+                return;
+            }
+            this.y -= 101;
+            break;
+        case 'right':
+            if(this.x + 101 > 404) {
+                return;
+            }
+            this.x += 101;
+            break;
+        case 'down':
+            if(this.y + 101 > 404) {
+                return;
+            }
+            this.y += 101;
+            break;
+        default:
+            throw new Error('Wrong direction');
+    }
 }
 
 Player.prototype.update = function() {
@@ -46,8 +73,8 @@ Player.prototype.render = function() {
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
 var allEnemies = [];
+
 var player = new Player();
-player.render();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
