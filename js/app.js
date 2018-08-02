@@ -2,7 +2,8 @@
 var Enemy = function() {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
-
+    this.x = 0;
+    this.y = 50;
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
@@ -14,6 +15,10 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    if (this.x > 707) {
+        this.x = 0;
+    }
+    this.x += dt*100;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -26,7 +31,7 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
     this.x = 202;
-    this.y = 404;
+    this.y = -20;
     this.sprite = 'images/char-boy.png';
 }
 
@@ -39,10 +44,10 @@ Player.prototype.handleInput = function(direction) {
             this.x -= 101;
             break;
         case 'up':
-            if(this.y - 101 < 0) {
+            if(this.y - 83 < -30) {
                 return;
             }
-            this.y -= 101;
+            this.y -= 83;
             break;
         case 'right':
             if(this.x + 101 > 404) {
@@ -51,10 +56,10 @@ Player.prototype.handleInput = function(direction) {
             this.x += 101;
             break;
         case 'down':
-            if(this.y + 101 > 404) {
+            if(this.y + 83 > 404) {
                 return;
             }
-            this.y += 101;
+            this.y += 83;
             break;
         default:
             throw new Error('Wrong direction');
@@ -72,7 +77,7 @@ Player.prototype.render = function() {
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
 // Place the player object in a variable called player
-var allEnemies = [];
+var allEnemies = [new Enemy()];
 
 var player = new Player();
 
