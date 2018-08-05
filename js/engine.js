@@ -79,7 +79,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -93,8 +93,26 @@ var Engine = (function(global) {
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
-        if (player.update().y < 20) {
-            player.reset();
+        player.update();
+    }
+
+    function checkCollisions() {
+        var imageSizeX = 101;
+        var imageSizeY = 171;
+        var playerPositionX = player.getPosition().x;
+        var playerPositionY = player.getPosition().y;
+
+        allEnemies.forEach(function(enemy) {
+            if ((playerPositionY - (enemy.getPosition().y - imageSizeY/2) > imageSizeY/2) &&
+                (playerPositionY - (enemy.getPosition().y + imageSizeY/2) <= 0) &&
+                (playerPositionX - (enemy.getPosition().x + imageSizeX/4) <= imageSizeX/2) &&
+                (playerPositionX - (enemy.getPosition().x - imageSizeX/2) > 0)) {
+                reset();
+            }
+        })
+        if (playerPositionY < 20) {
+            reset();
+            player.changeSkin();
         }
     }
 
@@ -163,7 +181,10 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        allEnemies.forEach(function(enemy) {
+            enemy.reset()
+        });
+        player.reset();
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -175,7 +196,10 @@ var Engine = (function(global) {
         'images/water-block.png',
         'images/grass-block.png',
         'images/enemy-bug.png',
-        'images/char-boy.png'
+        'images/char-boy.png',
+        'images/char-cat-girl.png',
+        'images/char-horn-girl.png',
+        'images/char-princess-girl.png'
     ]);
     Resources.onReady(init);
 
